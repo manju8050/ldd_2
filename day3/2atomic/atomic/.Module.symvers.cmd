@@ -1,0 +1,1 @@
+cmd_/home/manju/Desktop/ldd/day3/2atomic/atomic/Module.symvers := sed 's/ko$$/o/' /home/manju/Desktop/ldd/day3/2atomic/atomic/modules.order | scripts/mod/modpost -m -a   -o /home/manju/Desktop/ldd/day3/2atomic/atomic/Module.symvers -e -i Module.symvers   -T -
