@@ -20,7 +20,7 @@ int main()
 	
 	printf("[%d] - Opening device my_cdrv\n", getpid() );
 	
-	fd = open( "/dev/my_Ioctl_driver", O_RDWR );
+	fd = open( "/dev/my_Ioctl_driver", O_RDWR );  //return the new file descriptor (a nonnegative integer).  On error, -1 is returned
 		
 	
 	
@@ -51,7 +51,7 @@ int main()
 			perror("Error is ");
 			return -ENOENT;
 			/*
-			fd = open( "/dev/my_Ioctl_driv", O_RDWR );  // wrong address
+			fd = open( "/dev/my_Ioctl_driv", O_RDWR );  // wrong address // file with read only permission
 			fd = open( "", O_RDWR );   // no file
 			error number is -2
 			Error is ENOENT
@@ -77,7 +77,7 @@ int main()
 			*/	
 		}
 		
-		//int er = errno;
+		//int er = errno;  printf("%d\n",er); perror("Error\n");
 		
 		
 		printf("\n\nDevice could not be opened\n\n");
@@ -90,13 +90,25 @@ int main()
 	scanf("%d",&number);
 	printf("Writing Value to Driver\n");
 	
-	int wr=ioctl(fd, WR_VALUE, (int32_t*) &number);
+	int wr=ioctl(fd, WR_VALUE, (int32_t*) &number);  //return a nonnegative value on success.  On error, -1 is returned, 
 	
 	if(wr<0)
 	{
-		int er = errno;
-		printf("%d\n",er);
-		perror("Error\n");
+		if(errno==ENOTTY)
+		{
+			printf("error number is -%d\n",ENOTTY);
+			printf("Error is ENOTTY");
+			perror("Error is ");
+			return -ENOTTY;
+			
+			/*
+			fd = open( "aa.bin", O_RDWR |O_CREAT);
+			error number is -25
+			Error is ENOTTY
+			Error is : Inappropriate ioctl for device
+			
+			*/	
+		}
 	}
 	
 
@@ -136,9 +148,7 @@ int main()
 			//c = close(fd); 
 			
 		}
-		int er = errno;
-		printf("%d\n",er);
-		perror("Error\n");
+		
 	}
 	
 	
